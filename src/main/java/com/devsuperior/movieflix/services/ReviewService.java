@@ -8,7 +8,10 @@ import com.devsuperior.movieflix.repositories.MovieRepository;
 import com.devsuperior.movieflix.repositories.ReviewRepository;
 import com.devsuperior.movieflix.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
@@ -39,5 +42,14 @@ public class ReviewService {
 
         review = repository.save(review);
         return new ReviewDTO(review);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ReviewDTO> findByMovie(Long movieId, Pageable pageable){
+
+        movieRepository.findById(movieId).orElseThrow(() -> new ResourceNotFoundException("Movie not found"));
+
+        Page<Review> result = repository.searchMovieById(movieId,pageable);
+        return result.map(ReviewDTO::new);
     }
 }
