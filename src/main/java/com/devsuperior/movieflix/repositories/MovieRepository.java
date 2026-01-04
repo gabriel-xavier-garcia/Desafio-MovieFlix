@@ -14,7 +14,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
             SELECT m
             FROM Movie m
             WHERE (:genreId IS NULL OR m.genre.id = :genreId)
-            ORDER BY m.title.name
+            ORDER BY m.title
             """)
     Page<Movie> moviesByGenre(Long genreId, Pageable pageable);
 }
