@@ -16,5 +16,5 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
             WHERE (:genreId IS NULL OR m.genre.id = :genreId)
             ORDER BY m.title
             """)
-    Page<Movie> moviesByGenre(Long genreId, Pageable pageable);
+    Page<Movie> searchMovieByGenre(Long genreId, Pageable pageable);
 }
